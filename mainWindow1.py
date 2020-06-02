@@ -33,7 +33,8 @@ class Ui_mainWindow(object):
 
     def startOptimization(self):
         self.update_criteria_dict()
-        (fopt, xopt) = fropt.optimize_fletcher_reeves(self.comboBox_fx.currentText(), self.symbol_dict, self.criteria_dict)
+        (fopt, xopt) = fropt.optimize_fletcher_reeves(self.comboBox_fx.currentText(), self.symbol_dict,
+                                                      self.criteria_dict, float(self.lineEdit_alfa0.text()))
         #TODO  przedstawić wartości x* , f(x*)
         self.pushButton_wyswietl_kroki.setEnabled(True)
 
