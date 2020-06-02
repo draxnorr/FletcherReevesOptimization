@@ -32,8 +32,8 @@
    <widget class="QLabel" name="label_funkcjacelu">
     <property name="geometry">
      <rect>
-      <x>29</x>
-      <y>4</y>
+      <x>20</x>
+      <y>0</y>
       <width>211</width>
       <height>21</height>
      </rect>
@@ -58,9 +58,9 @@
    <widget class="QLabel" name="label_fx">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>30</y>
-      <width>31</width>
+      <width>51</width>
       <height>41</height>
      </rect>
     </property>
@@ -181,6 +181,9 @@
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_eps1">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -192,8 +195,14 @@
     <property name="text">
      <string>0.001</string>
     </property>
+    <property name="dragEnabled">
+     <bool>false</bool>
+    </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_eps2">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -207,6 +216,9 @@
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_eps3">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -242,10 +254,13 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;≤ ε&lt;span style=&quot; vertical-align:sub;&quot;&gt;4 &lt;/span&gt;=&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;≤ L&lt;span style=&quot; vertical-align:sub;&quot;&gt;max &lt;/span&gt;=&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_eps4">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -299,19 +314,6 @@
      <string>=</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_alfa">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>280</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>1.</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="lineEdit_alfa0">
     <property name="geometry">
      <rect>
@@ -326,6 +328,9 @@
     </property>
    </widget>
    <widget class="QCheckBox" name="checkBox_stopk2">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>420</x>
@@ -352,6 +357,9 @@
     </property>
    </widget>
    <widget class="QCheckBox" name="checkBox_stopk1">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>420</x>
@@ -391,6 +399,9 @@
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_epsk1">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>600</x>
@@ -404,6 +415,9 @@
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_epsk2">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>600</x>
@@ -417,12 +431,15 @@
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_rozpocznij_opt">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>520</y>
       <width>341</width>
-      <height>51</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -513,10 +530,10 @@
    <widget class="QComboBox" name="comboBox_fx">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>30</y>
-      <width>461</width>
-      <height>41</height>
+      <x>70</x>
+      <y>20</y>
+      <width>741</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="editable">
@@ -524,7 +541,12 @@
     </property>
     <item>
      <property name="text">
-      <string>x1^4 +x2^4–0.62*x1^2 –0.62*x2^2</string>
+      <string/>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>x1^4+x2^4-0.62*x1^2-0.62*x2^2</string>
      </property>
     </item>
     <item>
@@ -552,7 +574,7 @@
       <x>410</x>
       <y>520</y>
       <width>361</width>
-      <height>51</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -562,8 +584,8 @@
    <widget class="QLabel" name="label_x">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>80</y>
+      <x>30</x>
+      <y>90</y>
       <width>31</width>
       <height>41</height>
      </rect>
@@ -584,9 +606,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>80</y>
-      <width>461</width>
+      <x>70</x>
+      <y>90</y>
+      <width>741</width>
       <height>41</height>
      </rect>
     </property>
@@ -595,14 +617,14 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;[x1, x2]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;[]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_x0_startbracket">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>130</y>
+      <x>70</x>
+      <y>140</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -614,21 +636,21 @@ p, li { white-space: pre-wrap; }
    <widget class="QLineEdit" name="lineEdit_x0">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>130</y>
-      <width>441</width>
+      <x>80</x>
+      <y>140</y>
+      <width>701</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>0, 0</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="label_x0_endbracket">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>130</y>
+      <x>790</x>
+      <y>140</y>
       <width>31</width>
       <height>41</height>
      </rect>
@@ -641,7 +663,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>670</y>
+      <y>660</y>
       <width>51</width>
       <height>41</height>
      </rect>
@@ -660,8 +682,8 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>620</y>
-      <width>331</width>
+      <y>610</y>
+      <width>701</width>
       <height>41</height>
      </rect>
     </property>
@@ -677,7 +699,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>620</y>
+      <y>610</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -692,8 +714,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QLabel" name="label_x0">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>130</y>
+      <x>30</x>
+      <y>140</y>
       <width>31</width>
       <height>41</height>
      </rect>
@@ -711,10 +733,10 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="pushButton_zamknij_aplikacje">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>640</y>
-      <width>321</width>
-      <height>71</height>
+      <x>440</x>
+      <y>660</y>
+      <width>331</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -728,7 +750,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>670</y>
+      <y>660</y>
       <width>331</width>
       <height>41</height>
      </rect>
@@ -745,7 +767,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>580</y>
+      <y>570</y>
       <width>201</width>
       <height>41</height>
      </rect>
@@ -784,5 +806,230 @@ p, li { white-space: pre-wrap; }
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>comboBox_fx</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>textBrowser_x</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>352</x>
+     <y>95</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox_fx</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>lineEdit_x0</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>276</x>
+     <y>40</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>289</x>
+     <y>141</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_stop1</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEdit_eps1</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>317</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>264</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_stop2</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEdit_eps2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>31</x>
+     <y>375</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>236</x>
+     <y>376</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_stop3</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEdit_eps3</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>27</x>
+     <y>420</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>248</x>
+     <y>416</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_stop4</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEdit_eps4</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>41</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>242</x>
+     <y>472</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_inne_kryteria</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_stopk1</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>413</x>
+     <y>348</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>429</x>
+     <y>405</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_stopk1</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEdit_epsk1</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>455</x>
+     <y>389</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>617</x>
+     <y>398</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_stopk2</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEdit_epsk2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>455</x>
+     <y>440</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>666</x>
+     <y>451</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_inne_kryteria</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_stopk2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>415</x>
+     <y>353</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>425</x>
+     <y>453</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_zamknij_aplikacje</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>446</x>
+     <y>678</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>423</x>
+     <y>709</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_inne_kryteria</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_stopk1</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>407</x>
+     <y>348</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>448</x>
+     <y>399</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_rozpocznij_opt</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pushButton_wyswietl_kroki</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>302</x>
+     <y>532</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>471</x>
+     <y>529</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_inne_kryteria</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_stopk2</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>411</x>
+     <y>357</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>430</x>
+     <y>450</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
