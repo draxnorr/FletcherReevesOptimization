@@ -9,16 +9,45 @@
 import cexprtk
 from PyQt5 import QtCore, QtGui, QtWidgets
 import constants_file as cnst
+import fletcherReevesOpt as fropt
 
-symbol_dict = {} # nazwy zmiennych i ich wartosci
+
 
 class Ui_mainWindow(object):
     data_correctness_dict = {'fx': False, 'x0': False, 'eps_checkboxes': False}
+    criteria_dict = {} # zaznaczone kryteria i wartosci
+    symbol_dict = {} # nazwy zmiennych i ich wartosci
+    def update_criteria_dict(self):
+        if self.checkBox_stop1.isChecked():
+            self.criteria_dict["eps1"] = float(self.lineEdit_eps1.text())
+        if self.checkBox_stop2.isChecked():
+            self.criteria_dict["eps2"] = float(self.lineEdit_eps2.text())
+        if self.checkBox_stop3.isChecked():
+            self.criteria_dict["eps3"] = float(self.lineEdit_eps3.text())
+        if self.checkBox_stop4.isChecked():
+            self.criteria_dict["eps4"] = float(self.lineEdit_eps4.text())
+        if self.checkBox_stopk1.isChecked():
+            self.criteria_dict["epsk1"] = float(self.lineEdit_epsk1.text())
+        if self.checkBox_stopk2.isChecked():
+            self.criteria_dict["epsk2"] = float(self.lineEdit_epsk2.text())
+
+    def startOptimization(self):
+        self.update_criteria_dict()
+        (fopt, xopt) = fropt.optimize_fletcher_reeves(self.comboBox_fx.currentText(), self.symbol_dict, self.criteria_dict)
+        #TODO  przedstawić wartości x* , f(x*)
+        self.pushButton_wyswietl_kroki.setEnabled(True)
+
+    def unlock_button_rozpocznij_opt(self):
+        ans = True
+        for value in self.data_correctness_dict.values():
+            ans = ans and value
+        self.pushButton_rozpocznij_opt.setEnabled(ans)
 
     def check_stop_checkboxes(self, v):
         value = self.checkBox_stop1.isChecked() or self.checkBox_stop2.isChecked () or \
             self.checkBox_stop3.isChecked () or self.checkBox_stop4.isChecked ()
         self.data_correctness_dict['eps_checkboxes'] = value
+        self.unlock_button_rozpocznij_opt()
 
     def lock_checkBox_inne_kryteria(self, inne_kryteria_checkBox_state):
         if not self.checkBox_stopk1.isChecked() and not self.checkBox_stopk2.isChecked():
@@ -38,101 +67,134 @@ class Ui_mainWindow(object):
 
         st = cexprtk.Symbol_Table({},cnst.m_constants, add_constants = True)
 
-
         try:
-            ex = cexprtk.Expression(text,st,callback)
+            cexprtk.Expression(text,st,callback)
             for sym in sorted (exp_variables):
                 symbol_dict[sym] = 0.0
-            self.textBrowser_x.setText(", ".join([*symbol_dict.keys()]))
+            self.textBrowser_x.setText('['+", ".join([*symbol_dict.keys()])+']')
             self.lineEdit_x0.setText(", ".join([str(x) for x in symbol_dict.values()]))
-            #TODO  self.unlock_button_rozpocznij_opt()
+            self.data_correctness_dict['fx'] = True
+            self.data_correctness_dict['x0'] = True
         except:
+            self.comboBox_fx.removeItem(self.comboBox_fx.currentIndex())
             self.comboBox_fx.setCurrentText("Błąd odczytania funkcji. Nieznane znaki.")
-            self.pushButton_rozpocznij_opt.setEnabled(False)
+            self.textBrowser_x.setText ("[]")
+            self.lineEdit_x0.setText ("")
+            self.data_correctness_dict['fx'] = False
+            self.data_correctness_dict['x0'] = False
+        self.unlock_button_rozpocznij_opt()
 
-    def checkTextCorrectness_lineEdit_eps1(self,text):
+    def checkTextCorrectness_lineEdit_eps1(self):
+        text = self.lineEdit_eps1.text()
         val_if_error = 0.001
         try:
             val = float(text)
-            if val <= 0:
+            if val <= 0 or val > 10**200:
                 val = val_if_error
             self.lineEdit_eps1.setText(str(val))
         except:
             self.lineEdit_eps1.setText (str (val_if_error))
 
-    def checkTextCorrectness_lineEdit_eps2(self,text):
+    def checkTextCorrectness_lineEdit_eps2(self):
+        text = self.lineEdit_eps2.text ()
         val_if_error = 0.001
         try:
             val = float(text)
-            if val <= 0:
+            if val <= 0 or val > 10**200:
                 val = val_if_error
             self.lineEdit_eps2.setText(str(val))
         except:
             self.lineEdit_eps2.setText(str (val_if_error))
 
-    def checkTextCorrectness_lineEdit_eps3(self,text):
+    def checkTextCorrectness_lineEdit_eps3(self):
+        text = self.lineEdit_eps3.text ()
         val_if_error = 0.001
         try:
             val = float(text)
-            if val <= 0:
+            if val <= 0 or val > 10**200:
                 val = val_if_error
             self.lineEdit_eps3.setText(str(val))
         except:
             self.lineEdit_eps3.setText (str(val_if_error))
 
-    def checkTextCorrectness_lineEdit_eps4(self,text):
+    def checkTextCorrectness_lineEdit_eps4(self):
+        text = self.lineEdit_eps4.text ()
         val_if_error = 0.001
         try:
             val = float(text)
-            if val <= 0:
+            if val <= 0 or val > 10**200:
                 val = val_if_error
             self.lineEdit_eps4.setText(str(val))
         except:
             self.lineEdit_eps4.setText (str(val_if_error))
 
-    def checkTextCorrectness_lineEdit_epsk1(self,text):
+    def checkTextCorrectness_lineEdit_epsk1(self):
+        text = self.lineEdit_epsk1.text ()
         val_if_error = 0.001
         try:
             val = float(text)
-            if val <= 0:
+            if val <= 0 or val > 10**200:
                 val = val_if_error
             self.lineEdit_epsk1.setText(str(val))
         except:
             self.lineEdit_epsk1.setText (str(val_if_error))
 
-    def checkTextCorrectness_lineEdit_epsk2(self,text):
+    def checkTextCorrectness_lineEdit_epsk2(self):
+        text = self.lineEdit_epsk2.text ()
         val_if_error = 0.001
         try:
             val = float(text)
-            if val <= 0:
+            if val <= 0 or val > 10**200:
                 val = val_if_error
             self.lineEdit_epsk2.setText(str(val))
         except:
             self.lineEdit_epsk2.setText (str(val_if_error))
 
-    def checkTextCorrectness_lineEdit_alfa0(self,text):
+    def checkTextCorrectness_lineEdit_alfa0(self):
+        text = self.lineEdit_alfa0.text ()
+        alfa0_MAX_VALUE = 10**200
+        alfa0_MIN_VALUE = 0
         val_if_error = 1
         try:
             val = float(text)
-            if val <= 0 or val > 10^20:
+            if val <= alfa0_MIN_VALUE or val > alfa0_MAX_VALUE:
                 val = val_if_error
             self.lineEdit_alfa0.setText(str(val))
         except:
             self.lineEdit_alfa0.setText (str(val_if_error))
 
-    def checkTextCorrectness_lineEdit_x0(self,text):
-        values_str = text.split(',').strip()
-        try:
-            val = float(text)
-            if val <= 0 or val > 10^20:
-                val = val_if_error
-            self.lineEdit_x0.setText(str(val))
-        except:
-            self.lineEdit_x0.setText (str(val_if_error))
+    def checkTextCorrectness_lineEdit_x0(self):
+        # jesli blad, zapisz 0.0; odetnij, jesli podano zbyt wiele wartosci
+        x0_MAX_VALUE = 10**200
+        x0_MIN_VALUE = -10**200
+        text = self.lineEdit_x0.text()
 
-    def startOptimization(self):
-        self.pushButton_wyswietl_kroki.setEnabled(True)
-        #TODO
+        values_str = text.strip().split(',')
+        new_values = []
+        for el in values_str:
+            try:
+                val = float(el)
+                if val <= x0_MIN_VALUE or val > x0_MAX_VALUE:
+                    val = 0.0
+                new_values.append(val)
+            except:
+                new_values.append(0.0)
+
+        global symbol_dict
+        new_elems_str = []
+        for indx, key in enumerate(list(symbol_dict.keys())):
+            if indx < len(new_values):
+                symbol_dict[key] = new_values[indx]
+            else:
+                symbol_dict[key] = 0.0
+            new_elems_str.append(str(new_values[indx]))
+        self.lineEdit_x0.setText(', '.join(new_elems_str))
+        self.data_correctness_dict['x0'] = True
+        self.unlock_button_rozpocznij_opt()
+
+
+    def testfunc(self, x):
+        print('teraz')
 
     def setupUi(self, mainWindow):
         mainWindow.setObjectName("mainWindow")
@@ -279,6 +341,7 @@ class Ui_mainWindow(object):
         self.comboBox_fx.addItem("")
         self.comboBox_fx.addItem("")
         self.comboBox_fx.addItem("")
+        self.comboBox_fx.addItem("")
         self.pushButton_wyswietl_kroki = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_wyswietl_kroki.setEnabled(False)
         self.pushButton_wyswietl_kroki.setGeometry(QtCore.QRect(410, 520, 361, 41))
@@ -352,7 +415,6 @@ class Ui_mainWindow(object):
         self.pushButton_zamknij_aplikacje.clicked.connect(mainWindow.close)
         self.checkBox_inne_kryteria.toggled['bool'].connect(self.checkBox_stopk1.setChecked)
         self.checkBox_inne_kryteria.toggled['bool'].connect(self.checkBox_stopk2.setChecked)
-        self.comboBox_fx.currentTextChanged['QString'].connect(self.comboBox_fx_TextChanged)
         self.checkBox_stop1.toggled['bool'].connect(self.check_stop_checkboxes)
         self.checkBox_stop2.toggled['bool'].connect(self.check_stop_checkboxes)
         self.checkBox_stop3.toggled['bool'].connect(self.check_stop_checkboxes)
@@ -360,15 +422,15 @@ class Ui_mainWindow(object):
         self.checkBox_stopk1.toggled['bool'].connect(self.lock_checkBox_inne_kryteria)
         self.checkBox_stopk2.toggled['bool'].connect(self.lock_checkBox_inne_kryteria)
 
-        self.lineEdit_eps1.textEdited().connect (self.checkTextCorrectness_lineEdit_eps1)
-        self.lineEdit_eps2.textEdited().connect (self.checkTextCorrectness_lineEdit_eps2)
-        self.lineEdit_eps3.textEdited().connect (self.checkTextCorrectness_lineEdit_eps3)
-        self.lineEdit_eps4.textEdited().connect (self.checkTextCorrectness_lineEdit_eps4)
-        self.lineEdit_epsk1.textEdited().connect (self.checkTextCorrectness_lineEdit_epsk1)
-        self.lineEdit_epsk2.textEdited().connect (self.checkTextCorrectness_lineEdit_epsk2)
-        self.lineEdit_alfa0.textEdited().connect (self.checkTextCorrectness_lineEdit_alfa0)
-        self.lineEdit_x0.textEdited().connect (self.checkTextCorrectness_lineEdit_x0)
-
+        self.lineEdit_eps1.editingFinished.connect(self.checkTextCorrectness_lineEdit_eps1)
+        self.lineEdit_eps2.editingFinished.connect(self.checkTextCorrectness_lineEdit_eps2)
+        self.lineEdit_eps3.editingFinished.connect(self.checkTextCorrectness_lineEdit_eps3)
+        self.lineEdit_eps4.editingFinished.connect(self.checkTextCorrectness_lineEdit_eps4)
+        self.lineEdit_epsk1.editingFinished.connect(self.checkTextCorrectness_lineEdit_epsk1)
+        self.lineEdit_epsk2.editingFinished.connect(self.checkTextCorrectness_lineEdit_epsk2)
+        self.lineEdit_alfa0.editingFinished.connect(self.checkTextCorrectness_lineEdit_alfa0)
+        self.lineEdit_x0.editingFinished.connect(self.checkTextCorrectness_lineEdit_x0)
+        self.comboBox_fx.currentIndexChanged['QString'].connect(self.comboBox_fx_TextChanged)
 
         self.pushButton_rozpocznij_opt.clicked.connect(self.startOptimization)
 
@@ -413,19 +475,20 @@ class Ui_mainWindow(object):
         self.label_stop3.setText(_translate("mainWindow", "<html><head/><body><p>|f(x<span style=\" vertical-align:sub;\">n</span>)-f(x<span style=\" vertical-align:sub;\">n-1</span>)|</p></body></html>"))
         self.label_stop2.setText(_translate("mainWindow", "||x<sub>n</sub>-x<sub>n-1</sub>||"))
         self.label_opt_w_kierunku.setText(_translate("mainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">Oddzielne kryteria stopu dla metody optymalizacji w kierunku</span></p></body></html>"))
-        self.comboBox_fx.setItemText(0, _translate("mainWindow", "x1^4+x2^4-0.62*x1^2-0.62*x2^2"))
-        self.comboBox_fx.setItemText(1, _translate("mainWindow", "100*(x2-x1^2)^2+(1-x1)^2"))
-        self.comboBox_fx.setItemText(2, _translate("mainWindow", "(x1-x2+x3)^2+(-x1+x2+x3)^2+(x1+x2-x3)^2"))
-        self.comboBox_fx.setItemText(3, _translate("mainWindow", "(1+(x1+x2+1)^2*(19-14*x1+3*x1^2-14*x2+6*x1*x2 +3*x2^2))*(30+(2*x1-3*x2)^2(18-32*x1+12*x1^2+48*x2-36*x1*x2+27*x2^2))"))
+        self.comboBox_fx.setItemText (0, _translate ("mainWindow", ""))
+        self.comboBox_fx.setItemText(1, _translate("mainWindow", "x1^4+x2^4-0.62*x1^2-0.62*x2^2"))
+        self.comboBox_fx.setItemText(2, _translate("mainWindow", "100*(x2-x1^2)^2+(1-x1)^2"))
+        self.comboBox_fx.setItemText(3, _translate("mainWindow", "(x1-x2+x3)^2+(-x1+x2+x3)^2+(x1+x2-x3)^2"))
+        self.comboBox_fx.setItemText(4, _translate("mainWindow", "(1+(x1+x2+1)^2*(19-14*x1+3*x1^2-14*x2+6*x1*x2 +3*x2^2))*(30+(2*x1-3*x2)^2(18-32*x1+12*x1^2+48*x2-36*x1*x2+27*x2^2))"))
         self.pushButton_wyswietl_kroki.setText(_translate("mainWindow", "Wyświetl kroki optymalizacji "))
         self.label_x.setText(_translate("mainWindow", "<html><head/><body><p>x = </p></body></html>"))
         self.textBrowser_x.setHtml(_translate("mainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">[x1, x2]</span></p></body></html>"))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">[]</span></p></body></html>"))
         self.label_x0_startbracket.setText(_translate("mainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">[</span></p></body></html>"))
-        self.lineEdit_x0.setText(_translate("mainWindow", "0, 0"))
+        self.lineEdit_x0.setText(_translate("mainWindow", ""))
         self.label_x0_endbracket.setText(_translate("mainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">]</span></p></body></html>"))
         self.label_f_opt.setText(_translate("mainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">f(x*)=</span></p></body></html>"))
         self.textBrowser_x_opt.setHtml(_translate("mainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
