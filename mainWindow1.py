@@ -94,7 +94,8 @@ class Ui_mainWindow(object):
             self.data_correctness_dict['fx'] = True
             self.data_correctness_dict['x0'] = True
         except:
-            self.comboBox_fx.removeItem(self.comboBox_fx.currentIndex())
+            if self.comboBox_fx.currentIndex() != 0:
+                self.comboBox_fx.removeItem(self.comboBox_fx.currentIndex())
             self.comboBox_fx.setCurrentText("Błąd odczytania funkcji. Nieznane znaki.")
             self.textBrowser_x.setText ("[]")
             self.lineEdit_x0.setText ("")
@@ -357,6 +358,13 @@ class Ui_mainWindow(object):
         self.comboBox_fx.addItem("")
         self.comboBox_fx.addItem("")
         self.comboBox_fx.addItem("")
+        self.comboBox_fx.addItem("")
+        self.comboBox_fx.addItem("")
+        self.comboBox_fx.addItem("")
+        self.comboBox_fx.addItem ("")
+        self.comboBox_fx.addItem ("")
+        self.comboBox_fx.addItem ("")
+        self.comboBox_fx.addItem ("")
         self.comboBox_fx.addItem ("")
         self.pushButton_wyswietl_kroki = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_wyswietl_kroki.setEnabled(False)
@@ -485,7 +493,7 @@ class Ui_mainWindow(object):
         self.lineEdit_eps3.setText(_translate("mainWindow", "0.001"))
         self.checkBox_stop4.setText(_translate("mainWindow", "4. "))
         self.label_eps4.setText(_translate("mainWindow", "<html><head/><body><p>≥ L<span style=\" vertical-align:sub;\">max </span>=</p></body></html>"))
-        self.lineEdit_eps4.setText(_translate("mainWindow", "100"))
+        self.lineEdit_eps4.setText(_translate("mainWindow", "16"))
         self.label_metoda_kierunek.setText(_translate("mainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">Metoda optymalizacji w kierunku </span></p></body></html>"))
         self.comboBox_metoda_kierunek.setItemText(0, _translate("mainWindow", "Interpolacja sześcienna"))
         self.label_alfa_eq.setText(_translate("mainWindow", "="))
@@ -509,7 +517,14 @@ class Ui_mainWindow(object):
         self.comboBox_fx.setItemText(3, _translate("mainWindow", "100*(x2-x1^2)^2+(1-x1)^2"))
         self.comboBox_fx.setItemText(4, _translate("mainWindow", "(x1-x2+x3)^2+(-x1+x2+x3)^2+(x1+x2-x3)^2"))
         self.comboBox_fx.setItemText(5, _translate("mainWindow", "(1+(x1+x2+1)^2*(19-14*x1+3*x1^2-14*x2+6*x1*x2 +3*x2^2))*(30+(2*x1-3*x2)^2(18-32*x1+12*x1^2+48*x2-36*x1*x2+27*x2^2))"))
-        self.comboBox_fx.setItemText(6, _translate ("mainWindow", "(x1-2)^2+(x2-1)^2"))
+        self.comboBox_fx.setItemText(6, _translate ("mainWindow", "exp(-2.0*log(2.0)*(x-0.08)^2/0.854^2)*sin(5.0*pi*(x^(3/4)-0.05))"))
+        self.comboBox_fx.setItemText(7, _translate ("mainWindow", "(x1^2+x2-11.0)^2+(x1+x2^2-7.0)^2-200"))
+        self.comboBox_fx.setItemText(8, _translate ("mainWindow", "-20.0*exp(-0.2*sqrt(1/2)*(x1^2+x2^2))-exp(1/2*(cos(2*pi*x1)+cos(2*pi*x2)))"))
+        self.comboBox_fx.setItemText(9, _translate ("mainWindow", "x1^2-cos(18*x1)+x2^2-cos(18*x2)"))
+        self.comboBox_fx.setItemText(10, _translate ("mainWindow","4.0*x1^2-2.1*x1^4+1/3*x1^6+x1*x2-4*x2^2+4*x2^4"))
+        self.comboBox_fx.setItemText(11, _translate ("mainWindow", "sin(x1)*sin(x2)*exp(-(x1^2+x2^2))"))
+        self.comboBox_fx.setItemText(12, _translate ("mainWindow", "x1*exp(-(x1^2+x2^2))"))
+        self.comboBox_fx.setItemText (13, _translate ("mainWindow", "sin(5.1*pi*x+0.5)^6"))
         self.pushButton_wyswietl_kroki.setText(_translate("mainWindow", "Wyświetl kroki optymalizacji "))
         self.label_x.setText(_translate("mainWindow", "<html><head/><body><p>x = </p></body></html>"))
         self.textBrowser_x.setHtml(_translate("mainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

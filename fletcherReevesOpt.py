@@ -30,20 +30,28 @@ def optimize_bicubic_interpolation(st, expr, symbol_dict, criteria_dict, alfa0, 
     b = alfa0
 
     df_a = calculate_custom_derivative(st, expr, symbol_dict,x0,d0,a)
-    if df_a>=0: # pozniej mozna usunac #TODO
+    if df_a>=0: # pozniej mozna usunac
         with open ("indirection.txt", 'a') as file:  # Use file to refer to the file object
             text = 'n = ' + str (step) + ", a = " + str (a) + ", b = " +\
-                   str (b) + ", df_a = " + str (df_a) + ", df_a>=0"+", m = "+str(EPS)+"\n"
+                   str (b) + ", df_a = " + str (df_a) + ", df_a>=0"+", m = "+str(0.0)+"\n"
             file.write(text)
         print("df_a>=0; m=0.0")
         return 0.0
 
-    while (b > EPS):
+    while (b > 10**-6):
         df_b = calculate_custom_derivative(st, expr, symbol_dict,x0,d0,b)
         if df_b > 0 or math.isnan(df_b):
             break
         else:
             b = b/1.5
+    if df_b<=0: # pozniej mozna usunac
+        with open ("indirection.txt", 'a') as file:  # Use file to refer to the file object
+            text = 'n = ' + str (step) + ", a = " + str (a) + ", b = " +\
+                   str (b) + ", df_a = " + str (df_a) + ", df_b<=0"+", m = "+str(0.0)+"\n"
+            file.write(text)
+        print("df_b<=0; m=0.0")
+        return 0.0
+
     try:
         fval_a = calculate_direction_byval(st, expr, symbol_dict,x0,d0,a)
         fval_b = calculate_direction_byval(st, expr, symbol_dict,x0,d0,b)
@@ -53,6 +61,9 @@ def optimize_bicubic_interpolation(st, expr, symbol_dict, criteria_dict, alfa0, 
         d = e*(df_b+w-z)/(df_b-df_a+2*w)
         m = b-d
     except OverflowError:
+        print('optimize_bicubic_interpolation:OverflowError')
+        m = 0.0
+    except ValueError:
         print('optimize_bicubic_interpolation:OverflowError')
         m = 0.0
     print ('dfa:', df_a)

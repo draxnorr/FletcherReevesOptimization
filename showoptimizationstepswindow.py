@@ -147,7 +147,7 @@ class Ui_Dialog(object):
                 for j in range (0, l_probek):
                     st.variables[self.comboBox_zmienna1.currentText()]=X[i]
                     st.variables[self.comboBox_zmienna2.currentText()]=Y[j]
-                    c[i,j]=expr()
+                    c[j,i]=expr()
             self.sc.axes.cla()
             self.sc.axes.contourf(X,Y,c)
             self.rysujWszystkieKroki(dict)
@@ -156,6 +156,8 @@ class Ui_Dialog(object):
         self.sc.draw ()
 
     def rysujWszystkieKroki(self,dict):
+        p_x=0.0
+        p_y=0.0
         text = self.listWidget_optymalizacja.item(2).text ().split (',')[1]
         values = text.split ('[')[1].split (']')[0].split ()
         p_x_pre = float (values[list(dict.keys()).index (self.comboBox_zmienna1.currentText())])
@@ -167,7 +169,7 @@ class Ui_Dialog(object):
             p_x = float(values[list(dict.keys()).index(self.comboBox_zmienna1.currentText())])
             p_y = float(values[list(dict.keys()).index(self.comboBox_zmienna2.currentText())])
             self.sc.axes.scatter(p_x,p_y,marker='o',c='k',s=15)
-            self.sc.axes.plot(np.array([p_x,p_x_pre]),np.array([p_y,p_y_pre]),c='y',ms=15)
+            self.sc.axes.plot(np.array([p_x,p_x_pre]),np.array([p_y,p_y_pre]),c='0.75',ms=15)
             p_x_pre, p_y_pre = (p_x,p_y)
         self.sc.axes.scatter (p_x, p_y, marker='o', c='r', s=20)
 
