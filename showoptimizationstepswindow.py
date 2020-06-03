@@ -116,8 +116,15 @@ class Ui_Dialog(object):
         expr_text = self.listWidget_optymalizacja.item(0).text()
         symbols_text = self.listWidget_optymalizacja.item(1).text().strip()
         dict = {}
-        for elem in symbols_text.split (","):
-            dict[elem] = 0.0
+        for i, elem in enumerate(symbols_text.split (","),0):
+            if len(self.listWidget_optymalizacja.selectedItems())!=0:
+                text = self.listWidget_optymalizacja.selectedItems()[0].text()
+                if "x_n" in text:
+                    values = text.split(',')[1].split('[')[1].split (']')[0].split()
+                    dict[elem] = float(values[i])
+            else:
+                dict[elem] = 0.0
+
         st = cexprtk.Symbol_Table(dict,constants_file.m_constants,add_constants=True)
         expr = cexprtk.Expression(expr_text,st)
 
@@ -153,16 +160,17 @@ class Ui_Dialog(object):
         values = text.split ('[')[1].split (']')[0].split ()
         p_x_pre = float (values[list(dict.keys()).index (self.comboBox_zmienna1.currentText())])
         p_y_pre = float (values[list(dict.keys()).index (self.comboBox_zmienna2.currentText())])
-        self.sc.axes.scatter (p_x_pre, p_y_pre, marker='o', c='r', s=20)
-
+        self.sc.axes.scatter (p_x_pre, p_y_pre, marker='o', c='m', s=20)
         for i in range (3,self.listWidget_optymalizacja.count()):
             text = self.listWidget_optymalizacja.item(i).text().split(',')[1]
             values = text.split('[')[1].split(']')[0].split()
             p_x = float(values[list(dict.keys()).index(self.comboBox_zmienna1.currentText())])
             p_y = float(values[list(dict.keys()).index(self.comboBox_zmienna2.currentText())])
-            self.sc.axes.scatter(p_x,p_y,marker='o',c='r',s=20)
+            self.sc.axes.scatter(p_x,p_y,marker='o',c='k',s=15)
             self.sc.axes.plot(np.array([p_x,p_x_pre]),np.array([p_y,p_y_pre]),c='y',ms=15)
             p_x_pre, p_y_pre = (p_x,p_y)
+        self.sc.axes.scatter (p_x, p_y, marker='o', c='r', s=20)
+
 
     def setupUi(self, Dialog):
         Dialog.setObjectName ("Dialog")

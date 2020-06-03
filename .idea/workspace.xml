@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="1834b418-ec26-4c8a-b8ac-9e28887dda5f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/fletcherReevesOpt.py" beforeDir="false" afterPath="$PROJECT_DIR$/fletcherReevesOpt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/indirection.txt" beforeDir="false" afterPath="$PROJECT_DIR$/indirection.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainWindow1.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainWindow1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/optimization.txt" beforeDir="false" afterPath="$PROJECT_DIR$/optimization.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/showoptimizationstepswindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/showoptimizationstepswindow.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,8 +19,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mainWindow1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="154" column="49" lean-forward="true" selection-start-line="154" selection-start-column="49" selection-end-line="154" selection-end-column="49" />
+            <state relative-caret-position="193">
+              <caret line="51" selection-start-line="51" selection-end-line="51" />
               <folding>
                 <element signature="e#199#213#0" expanded="true" />
               </folding>
@@ -25,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/showoptimizationstepswindow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-28">
-              <caret line="147" column="55" selection-start-line="147" selection-start-column="55" selection-end-line="147" selection-end-column="55" />
+            <state relative-caret-position="244">
+              <caret line="162" column="64" selection-start-line="162" selection-start-column="64" selection-end-line="162" selection-end-column="64" />
               <folding>
                 <element signature="e#217#259#0" expanded="true" />
               </folding>
@@ -37,39 +40,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python38/Lib/site-packages/matplotlib/axes/_axes.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="5836" selection-start-line="5836" selection-end-line="5836" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python38/Lib/site-packages/matplotlib/backends/backend_qt5.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="678" selection-start-line="678" selection-end-line="678" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor />
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fletcherReevesOpt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="35" column="87" selection-start-line="35" selection-start-column="87" selection-end-line="35" selection-end-column="87" />
+            <state relative-caret-position="244">
+              <caret line="105" column="46" lean-forward="true" selection-start-line="105" selection-start-column="46" selection-end-line="105" selection-end-column="46" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -100,13 +75,24 @@
       <find>addit</find>
       <find>dtype</find>
       <find>isnan</find>
-      <find>write</find>
       <find>widget_</find>
       <find>rysuj</find>
       <find>combobox_fx</find>
-      <find>rozdzi</find>
       <find>L</find>
       <find>eps4</find>
+      <find>write</find>
+      <find>dfb</find>
+      <find>criteri</find>
+      <find>v_curr</find>
+      <find>opt</find>
+      <find>label_x_opt</find>
+      <find>crit_op</find>
+      <find>textBr</find>
+      <find>optym</find>
+      <find>optymali</find>
+      <find>startOp</find>
+      <find>ret</find>
+      <find>rozdzi</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -118,8 +104,8 @@
         <option value="$PROJECT_DIR$/constants_file.py" />
         <option value="$PROJECT_DIR$/mainWindow.py" />
         <option value="$PROJECT_DIR$/showoptimizationstepswindow1.py" />
-        <option value="$PROJECT_DIR$/fletcherReevesOpt.py" />
         <option value="$PROJECT_DIR$/mainWindow1.py" />
+        <option value="$PROJECT_DIR$/fletcherReevesOpt.py" />
         <option value="$PROJECT_DIR$/showoptimizationstepswindow.py" />
       </list>
     </option>
@@ -300,12 +286,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1591094921687</updated>
-      <workItem from="1591094922794" duration="54879000" />
+      <workItem from="1591094922794" duration="59756000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54879000" />
+    <option name="totallyTimeSpent" value="59756000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -326,10 +312,10 @@
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="1" />
       <window_info anchor="bottom" id="Version Control" order="2" weight="0.32932165" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="3" sideWeight="0.5006954" side_tool="true" visible="true" weight="0.28008753" />
+      <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.5006954" side_tool="true" visible="true" weight="0.28008753" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" />
-      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.4993046" visible="true" weight="0.28008753" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.4993046" visible="true" weight="0.28008753" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.39934355" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -370,7 +356,7 @@
     <option name="version" value="1" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/FletcherReevesOptimization$mainWindow1.coverage" NAME="mainWindow1 Coverage Results" MODIFIED="1591161681925" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FletcherReevesOptimization$mainWindow1.coverage" NAME="mainWindow1 Coverage Results" MODIFIED="1591167149065" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/FletcherReevesOptimization$mainWindow__1_.coverage" NAME="mainWindow (1) Coverage Results" MODIFIED="1591108413422" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/FletcherReevesOptimization$showoptimizationstepswindow.coverage" NAME="showoptimizationstepswindow Coverage Results" MODIFIED="1591145857904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/FletcherReevesOptimization$fletcherReevesOpt.coverage" NAME="fletcherReevesOpt Coverage Results" MODIFIED="1591137324793" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -433,16 +419,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fletcherReevesOpt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="35" column="87" selection-start-line="35" selection-start-column="87" selection-end-line="35" selection-end-column="87" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python38/Lib/site-packages/matplotlib/backends/backend_qt5.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="211">
@@ -459,20 +435,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mainWindow1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="154" column="49" lean-forward="true" selection-start-line="154" selection-start-column="49" selection-end-line="154" selection-end-column="49" />
+        <state relative-caret-position="193">
+          <caret line="51" selection-start-line="51" selection-end-line="51" />
           <folding>
             <element signature="e#199#213#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python38/Lib/encodings/cp1250.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/showoptimizationstepswindow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-28">
-          <caret line="147" column="55" selection-start-line="147" selection-start-column="55" selection-end-line="147" selection-end-column="55" />
+        <state relative-caret-position="244">
+          <caret line="162" column="64" selection-start-line="162" selection-start-column="64" selection-end-line="162" selection-end-column="64" />
           <folding>
             <element signature="e#217#259#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fletcherReevesOpt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="105" column="46" lean-forward="true" selection-start-line="105" selection-start-column="46" selection-end-line="105" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>

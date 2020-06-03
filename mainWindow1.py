@@ -26,7 +26,7 @@ class Ui_mainWindow(object):
 
 
     def update_criteria_dict(self):
-        criteria_dict={}
+        self.criteria_dict={}
         if self.checkBox_stop1.isChecked():
             self.criteria_dict["eps1"] = float(self.lineEdit_eps1.text())
         if self.checkBox_stop2.isChecked():
@@ -49,10 +49,11 @@ class Ui_mainWindow(object):
             file.write (self.comboBox_fx.currentText ()+"\n")
             file.write (",".join (self.symbol_dict.keys ())+"\n")
 
-        (fopt, xopt) = fropt.optimize_fletcher_reeves(self.comboBox_fx.currentText(), self.symbol_dict,
+        (fopt, xopt, critopt) = fropt.optimize_fletcher_reeves(self.comboBox_fx.currentText(), self.symbol_dict,
                                                       self.criteria_dict, float(self.lineEdit_alfa0.text()))
         self.textBrowser_f_opt.setText(str(fopt))
-        self.textBrowser_x_opt.setText(", ".join([str(x) for x in xopt]))
+        self.textBrowser_x_opt.setText('['+", ".join([str(x) for x in xopt])+']')
+        self.textBrowser_crit_opt.setText('['+", ".join([str(x) for x in critopt])+']')
         self.pushButton_wyswietl_kroki.setEnabled(True)
 
     def unlock_button_rozpocznij_opt(self):
@@ -212,7 +213,7 @@ class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
         mainWindow.setObjectName("mainWindow")
         mainWindow.setEnabled(True)
-        mainWindow.resize(840, 757)
+        mainWindow.resize(840, 780)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -391,6 +392,17 @@ class Ui_mainWindow(object):
         self.label_x_opt.setGeometry(QtCore.QRect(20, 610, 41, 41))
         self.label_x_opt.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_x_opt.setObjectName("label_x_opt")
+
+        self.label_crit_opt = QtWidgets.QLabel (self.centralwidget)
+        self.label_crit_opt.setGeometry (QtCore.QRect (20, 710, 41, 41))
+        self.label_crit_opt.setAlignment (QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
+        self.label_crit_opt.setObjectName ("label_crit_opt")
+
+        self.textBrowser_crit_opt = QtWidgets.QTextBrowser (self.centralwidget)
+        self.textBrowser_crit_opt.setEnabled (False)
+        self.textBrowser_crit_opt.setGeometry (QtCore.QRect (70, 710, 701, 41))
+        self.textBrowser_crit_opt.setObjectName("textBrowser_crit_opt")
+
         self.label_x0 = QtWidgets.QLabel(self.centralwidget)
         self.label_x0.setGeometry(QtCore.QRect(30, 140, 31, 41))
         self.label_x0.setLayoutDirection(QtCore.Qt.LeftToRight)
@@ -514,7 +526,16 @@ class Ui_mainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">[]</span></p></body></html>"))
+        self.textBrowser_crit_opt.setHtml (_translate ("mainWindow",
+                                                    "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                                                    "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                                    "p, li { white-space: pre-wrap; }\n"
+                                                    "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+                                                    "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">[]</span></p></body></html>"))
+
         self.label_x_opt.setText(_translate("mainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">x* = </span></p></body></html>"))
+        self.label_crit_opt.setText (_translate ("mainWindow","<html><head/><body><p><span style=\" font-weight:600;\"> ε* = </span></p></body></html>"))
+
         self.label_x0.setText(_translate("mainWindow", "<html><head/><body><p>x<span style=\" vertical-align:sub;\">0</span> = </p></body></html>"))
         self.pushButton_zamknij_aplikacje.setText(_translate("mainWindow", "Zamknij aplikację"))
         self.textBrowser_f_opt.setHtml(_translate("mainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

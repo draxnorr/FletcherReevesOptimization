@@ -5,7 +5,7 @@ import math
 
 EPS = 10**(-8)
 def calculate_custom_derivative(st, expr, symbol_dict, x0, d0, alfa):
-    H = 10**-4
+    H = 10**-6
     for i, key in enumerate (symbol_dict.keys (), 0):
         st.variables[key] = x0[i]+d0[i]*(alfa+H)
     fval_1 = expr()
@@ -35,24 +35,26 @@ def optimize_bicubic_interpolation(st, expr, symbol_dict, criteria_dict, alfa0, 
             text = 'n = ' + str (step) + ", a = " + str (a) + ", b = " +\
                    str (b) + ", df_a = " + str (df_a) + ", df_a>=0"+", m = "+str(EPS)+"\n"
             file.write(text)
-        return EPS
+        print("df_a>=0; m=0.0")
+        return 0.0
 
     while (b > EPS):
         df_b = calculate_custom_derivative(st, expr, symbol_dict,x0,d0,b)
-        if math.isnan(df_b):
-            df_b = 10**100
-            print ('isnan:', df_b)
-        if df_b > 0:
+        if df_b > 0 or math.isnan(df_b):
             break
         else:
             b = b/1.5
-    fval_a = calculate_direction_byval(st, expr, symbol_dict,x0,d0,a)
-    fval_b = calculate_direction_byval(st, expr, symbol_dict,x0,d0,b)
-    e = b - a
-    z = 3*(fval_a-fval_b)/e+df_a+df_b
-    w = math.sqrt(z**2-df_a*df_b)
-    d = e*(df_b+w-z)/(df_b-df_a+2*w)
-    m = b-d
+    try:
+        fval_a = calculate_direction_byval(st, expr, symbol_dict,x0,d0,a)
+        fval_b = calculate_direction_byval(st, expr, symbol_dict,x0,d0,b)
+        e = b - a
+        z = 3*(fval_a-fval_b)/e+df_a+df_b
+        w = math.sqrt(z**2-df_a*df_b)
+        d = e*(df_b+w-z)/(df_b-df_a+2*w)
+        m = b-d
+    except OverflowError:
+        print('optimize_bicubic_interpolation:OverflowError')
+        m = 0.0
     print ('dfa:', df_a)
     print ('dfb:', df_b)
 
@@ -62,24 +64,10 @@ def optimize_bicubic_interpolation(st, expr, symbol_dict, criteria_dict, alfa0, 
         file.write(text)
 
     return m
-    # df_m = calculate_custom_derivative (st, expr, symbol_dict, x0, d0, m)
-    # if abs(df_m)<EPS:
-    #     break
-    # if df_m >0:
-    #     b=m
-    # else:
-    #     a=m
-    #
-    #x_a = x_current + a * v_current
-    #for i, key in enumerate (symbol_dict.keys (), 0):
-    #    st.variables[key] = x_current[i]
-
-    #TODO
-    #return 0.001
 
 
 def optimize_fletcher_reeves(text_expression, symbol_dict, criteria_dict, alfa0):
-    EPS_DIVISION = 10^-8
+    EPS_DIVISION = 10**-6
     st = cexprtk.Symbol_Table(symbol_dict, cnst.m_constants, add_constants=True)
     expr = cexprtk.Expression(text_expression, st)
     n = len(symbol_dict)
@@ -109,7 +97,8 @@ def optimize_fletcher_reeves(text_expression, symbol_dict, criteria_dict, alfa0)
 
         with open ("optimization.txt", 'a') as file:  # Use file to refer to the file object
             text = 'n = ' + str(step) + ", x_n = " + str (x_current) + ", f_n = " + str (fx_current) + \
-                   ", grad_fx = " + str (grad_current) + ", beta = " + str (beta) + "\n"
+                   ", grad_fx = " + str (grad_current) + ", beta = " + str (beta) + ", e1 = " + str(crit1) +\
+                   ", e2 = " + str(crit2) + ", e3 = " + str(crit3) + ", e4 = " + str(crit4) +"\n"
             ''.join(text)
             file.write (text)
 
@@ -131,6 +120,12 @@ def optimize_fletcher_reeves(text_expression, symbol_dict, criteria_dict, alfa0)
             if crit4 >= criteria_dict['eps4']:
                 print('crit4')
                 break # przerwij algorytm
+
+        if np.prod(np.isnan(grad_current)):
+            print ('error')
+            arr = np.empty((n,))
+            arr[:] = np.nan
+            return (float('nan'),arr.tolist())
 
         if step % n == 0:
             ak = 0
@@ -162,12 +157,9 @@ def optimize_fletcher_reeves(text_expression, symbol_dict, criteria_dict, alfa0)
         for i, key in enumerate(symbol_dict.keys(),0):
             st.variables[key] = x_current[i]
 
-        if np.linalg.norm(grad_current) > 10**100:
-            print ('error')
-            return (0.0,np.zeros((n,)).tolist())
 
     print('finished')
-    return (fx_current, x_current.tolist())
+    return (fx_current, x_current.tolist(), (crit1, crit2, crit3, crit4))
 
 
 def calculate_gradient(symbol_dict, st, expr):
