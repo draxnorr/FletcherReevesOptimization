@@ -4,104 +4,190 @@ import numpy as np
 import math
 
 EPS = 10**(-8)
+def calculate_custom_derivative(st, expr, symbol_dict, x0, d0, alfa):
+    H = 10**-4
+    for i, key in enumerate (symbol_dict.keys (), 0):
+        st.variables[key] = x0[i]+d0[i]*(alfa+H)
+    fval_1 = expr()
+    for i, key in enumerate (symbol_dict.keys (), 0):
+        st.variables[key] = x0[i]+d0[i]*(alfa-H)
+    fval_2 = expr()
+    derivative = (fval_1-fval_2)/(2*H)
 
-def optimize_bicubic_interpolation():
-    pass
-#TODO
+    return derivative
+
+def calculate_direction_byval(st, expr, symbol_dict, x0, d0, alfa):
+    for i, key in enumerate (symbol_dict.keys (), 0):
+        st.variables[key] = x0[i]+d0[i]*alfa
+    fval = expr()
+
+    return fval
+
+
+def optimize_bicubic_interpolation(st, expr, symbol_dict, criteria_dict, alfa0, x0, d0, step):
+    #d - kierunek, a,b -
+    a = 0
+    b = alfa0
+
+    df_a = calculate_custom_derivative(st, expr, symbol_dict,x0,d0,a)
+    if df_a>=0: # pozniej mozna usunac #TODO
+        with open ("indirection.txt", 'a') as file:  # Use file to refer to the file object
+            text = 'n = ' + str (step) + ", a = " + str (a) + ", b = " +\
+                   str (b) + ", df_a = " + str (df_a) + ", df_a>=0"+", m = "+str(EPS)+"\n"
+            file.write(text)
+        return EPS
+
+    while (b > EPS):
+        df_b = calculate_custom_derivative(st, expr, symbol_dict,x0,d0,b)
+        if math.isnan(df_b):
+            df_b = 10**100
+            print ('isnan:', df_b)
+        if df_b > 0:
+            break
+        else:
+            b = b/1.5
+    fval_a = calculate_direction_byval(st, expr, symbol_dict,x0,d0,a)
+    fval_b = calculate_direction_byval(st, expr, symbol_dict,x0,d0,b)
+    e = b - a
+    z = 3*(fval_a-fval_b)/e+df_a+df_b
+    w = math.sqrt(z**2-df_a*df_b)
+    d = e*(df_b+w-z)/(df_b-df_a+2*w)
+    m = b-d
+    print ('dfa:', df_a)
+    print ('dfb:', df_b)
+
+    with open ("indirection.txt",'a') as file:  # Use file to refer to the file object
+        text = 'n = '+ str(step) + ", a = "+str(a)+", b = "+str(b)+", df_a = "+str(df_a)+\
+               ", df_b = "+str(df_b)+", m = "+str(m)+"\n"
+        file.write(text)
+
+    return m
+    # df_m = calculate_custom_derivative (st, expr, symbol_dict, x0, d0, m)
+    # if abs(df_m)<EPS:
+    #     break
+    # if df_m >0:
+    #     b=m
+    # else:
+    #     a=m
+    #
+    #x_a = x_current + a * v_current
+    #for i, key in enumerate (symbol_dict.keys (), 0):
+    #    st.variables[key] = x_current[i]
+
+    #TODO
+    #return 0.001
 
 
 def optimize_fletcher_reeves(text_expression, symbol_dict, criteria_dict, alfa0):
-    st = cexprtk.Symbol_Table (symbol_dict, cnst.m_constants, add_constants=True)
-    expr = cexprtk.Expression (text_expression, st)
+    EPS_DIVISION = 10^-8
+    st = cexprtk.Symbol_Table(symbol_dict, cnst.m_constants, add_constants=True)
+    expr = cexprtk.Expression(text_expression, st)
     n = len(symbol_dict)
 
-    step = 1
-    x_predecessor = np.array(list(symbol_dict.values()),dtype=float)
+    step = 0
+    beta = 0.0
+    x_predecessor = np.array(list(symbol_dict.values()),dtype=np.float64)
+    x_current = np.array (list(symbol_dict.values ()), dtype=np.float64)
     fx_predecessor = expr()
-    v_predecessor = np.zeros((n,),dtype=float)
-    grad_predecessor = np.zeros((n,),dtype=float)
-    x_current = np.array (list(symbol_dict.values ()), dtype=float)
+    v_current = np.zeros((n,),dtype=np.float64)
+    v_predecessor = np.zeros((n,),dtype=np.float64)
+    grad_predecessor = np.zeros((n,),dtype=np.float64)
 
     while(True):
         grad_current = calculate_gradient(symbol_dict,st,expr)
+
         fx_current = expr()
+
+        print('step: ', step)
+        print ('x_current: ', x_current)
+        print ('grad: ', grad_current)
 
         crit1 = grad_current.dot(grad_current)
         crit2 = np.linalg.norm(np.subtract(x_current,x_predecessor))
         crit3 = abs(fx_current-fx_predecessor)
         crit4 = step
 
+        with open ("optimization.txt", 'a') as file:  # Use file to refer to the file object
+            text = 'n = ' + str(step) + ", x_n = " + str (x_current) + ", f_n = " + str (fx_current) + \
+                   ", grad_fx = " + str (grad_current) + ", beta = " + str (beta) + "\n"
+            ''.join(text)
+            file.write (text)
+
         if 'eps1' in criteria_dict:
-            if crit1 > criteria_dict['eps1']:
+            if crit1 <= criteria_dict['eps1']:
+                print('crit1')
                 break # przerwij algorytm
         if 'eps2' in criteria_dict:
-            if crit2 > criteria_dict['eps2']:
-                break # przerwij algorytm
+            if crit2 <= criteria_dict['eps2']:
+                if step >0:
+                    print('crit2')
+                    break # przerwij algorytm
         if 'eps3' in criteria_dict:
-            if crit3 > criteria_dict['eps3']:
-                break # przerwij algorytm
+            if crit3 <= criteria_dict['eps3']:
+                if step > 0:
+                    print('crit3')
+                    break # przerwij algorytm
         if 'eps4' in criteria_dict:
-            if crit4 > criteria_dict['eps4']:
+            if crit4 >= criteria_dict['eps4']:
+                print('crit4')
                 break # przerwij algorytm
 
         if step % n == 0:
             ak = 0
         else:
-            ak = (np.transpose(grad_current)@grad_current)/(np.transpose(grad_predecessor)@grad_predecessor)
+            denominator = np.transpose(grad_predecessor)@grad_predecessor
+            if abs(denominator) < EPS_DIVISION:
+                if denominator >= 0:
+                    denominator = EPS_DIVISION
+                else:
+                    denominator = -EPS_DIVISION
+            print ('denominator: ', denominator)
+            ak = (np.transpose(grad_current)@grad_current)/denominator
+            print('ak:',ak)
 
         v_current = -grad_current+ak*v_predecessor
-        beta = optimize_bicubic_interpolation(alfa0)
+        beta = optimize_bicubic_interpolation(st, expr, symbol_dict, criteria_dict, alfa0, x_current, v_current,step)
+
+        print('v_current:', v_current,'beta: ', beta)
+
+        print ('----')
+
 
         x_predecessor = x_current
         fx_predecessor = fx_current
         grad_predecessor = grad_current
         v_predecessor = v_current
-
+        step = step + 1
         x_current = x_current + beta*v_current
         for i, key in enumerate(symbol_dict.keys(),0):
             st.variables[key] = x_current[i]
 
+        if np.linalg.norm(grad_current) > 10**100:
+            print ('error')
+            return (0.0,np.zeros((n,)).tolist())
 
-    return grad_current
+    print('finished')
+    return (fx_current, x_current.tolist())
 
 
 def calculate_gradient(symbol_dict, st, expr):
+    EPS_CALC = 10**(-6)
     grad = []
     for symbol in symbol_dict.keys():
         default_val = st.variables[symbol]
 
         if abs(default_val) < 0.001:
-            st.variables[symbol] = default_val + EPS
+            st.variables[symbol] = default_val + EPS_CALC
             f_ph = expr()
-            st.variables[symbol] = default_val - EPS
+            st.variables[symbol] = default_val - EPS_CALC
             f_mh = expr()
-            grad.append((f_ph-f_mh)/(2*EPS))
+            grad.append((f_ph-f_mh)/(2*EPS_CALC))
         else:
-            st.variables[symbol] = default_val*(1+math.sqrt(EPS))
+            st.variables[symbol] = default_val*(1+math.sqrt(EPS_CALC))
             f_ph = expr()
-            st.variables[symbol] = default_val*(1-math.sqrt(EPS))
+            st.variables[symbol] = default_val*(1-math.sqrt(EPS_CALC))
             f_mh = expr()
-            grad.append((f_ph - f_mh) / (2*default_val*math.sqrt(EPS)))
+            grad.append((f_ph - f_mh) / (2*default_val*math.sqrt(EPS_CALC)))
         st.variables[symbol] = default_val
-
-    grad = np.array(grad,dtype=float)
+    grad = np.array(grad,dtype=np.float64)
     return grad
-
-
-#test1
-text_expression = "x1^2+5"
-symbol_dict = {'x1':2.0}
-criteria_dict={}
-ans = optimize_fletcher_reeves(text_expression, symbol_dict, criteria_dict)
-### 2*2.0 = 4.0
-
-#test2
-text_expression = "x1^2+x2^3+50*x1"
-symbol_dict = {'x1':5.0,'x2':10.0}
-criteria_dict={}
-ans = optimize_fletcher_reeves(text_expression, symbol_dict, criteria_dict)
-print(ans.shape)
-ans = ans.dot(ans)
-print(ans)
-### 60.0 300.0          # 2*5.0+50 = 60.0, 3*10.0**2 = 300.0
-#print(np.linalg.norm(ans))

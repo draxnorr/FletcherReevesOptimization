@@ -10,14 +10,23 @@ import cexprtk
 from PyQt5 import QtCore, QtGui, QtWidgets
 import constants_file as cnst
 import fletcherReevesOpt as fropt
-
+import showoptimizationstepswindow as window2
 
 
 class Ui_mainWindow(object):
     data_correctness_dict = {'fx': False, 'x0': False, 'eps_checkboxes': False}
     criteria_dict = {} # zaznaczone kryteria i wartosci
     symbol_dict = {} # nazwy zmiennych i ich wartosci
+
+    def wyswietl_kroki(self):
+        self.Dialog = QtWidgets.QDialog()
+        ui = window2.Ui_Dialog ()
+        ui.setupUi (self.Dialog)
+        self.Dialog.exec()
+
+
     def update_criteria_dict(self):
+        criteria_dict={}
         if self.checkBox_stop1.isChecked():
             self.criteria_dict["eps1"] = float(self.lineEdit_eps1.text())
         if self.checkBox_stop2.isChecked():
@@ -33,9 +42,17 @@ class Ui_mainWindow(object):
 
     def startOptimization(self):
         self.update_criteria_dict()
+        with open("optimization.txt","w") as file:
+            file.write(self.comboBox_fx.currentText()+"\n")
+            file.write(",".join(self.symbol_dict.keys())+"\n")
+        with open("indirection.txt","w") as file:
+            file.write (self.comboBox_fx.currentText ()+"\n")
+            file.write (",".join (self.symbol_dict.keys ())+"\n")
+
         (fopt, xopt) = fropt.optimize_fletcher_reeves(self.comboBox_fx.currentText(), self.symbol_dict,
                                                       self.criteria_dict, float(self.lineEdit_alfa0.text()))
-        #TODO  przedstawić wartości x* , f(x*)
+        self.textBrowser_f_opt.setText(str(fopt))
+        self.textBrowser_x_opt.setText(", ".join([str(x) for x in xopt]))
         self.pushButton_wyswietl_kroki.setEnabled(True)
 
     def unlock_button_rozpocznij_opt(self):
@@ -57,8 +74,7 @@ class Ui_mainWindow(object):
             self.checkBox_stopk2.setEnabled(False)
 
     def comboBox_fx_TextChanged(self,text):
-        global symbol_dict
-        symbol_dict= {}
+        self.symbol_dict= {}
         exp_variables = []
 
         def callback(symbol):
@@ -71,9 +87,9 @@ class Ui_mainWindow(object):
         try:
             cexprtk.Expression(text,st,callback)
             for sym in sorted (exp_variables):
-                symbol_dict[sym] = 0.0
-            self.textBrowser_x.setText('['+", ".join([*symbol_dict.keys()])+']')
-            self.lineEdit_x0.setText(", ".join([str(x) for x in symbol_dict.values()]))
+                self.symbol_dict[sym] = 0.0
+            self.textBrowser_x.setText('['+", ".join([*self.symbol_dict.keys()])+']')
+            self.lineEdit_x0.setText(", ".join([str(x) for x in self.symbol_dict.values()]))
             self.data_correctness_dict['fx'] = True
             self.data_correctness_dict['x0'] = True
         except:
@@ -120,9 +136,9 @@ class Ui_mainWindow(object):
 
     def checkTextCorrectness_lineEdit_eps4(self):
         text = self.lineEdit_eps4.text ()
-        val_if_error = 0.001
+        val_if_error = 100
         try:
-            val = float(text)
+            val = int(text)
             if val <= 0 or val > 10**200:
                 val = val_if_error
             self.lineEdit_eps4.setText(str(val))
@@ -181,21 +197,17 @@ class Ui_mainWindow(object):
             except:
                 new_values.append(0.0)
 
-        global symbol_dict
         new_elems_str = []
-        for indx, key in enumerate(list(symbol_dict.keys())):
+        for indx, key in enumerate(list(self.symbol_dict.keys())):
             if indx < len(new_values):
-                symbol_dict[key] = new_values[indx]
+                self.symbol_dict[key] = new_values[indx]
             else:
-                symbol_dict[key] = 0.0
+                self.symbol_dict[key] = 0.0
             new_elems_str.append(str(new_values[indx]))
         self.lineEdit_x0.setText(', '.join(new_elems_str))
         self.data_correctness_dict['x0'] = True
         self.unlock_button_rozpocznij_opt()
 
-
-    def testfunc(self, x):
-        print('teraz')
 
     def setupUi(self, mainWindow):
         mainWindow.setObjectName("mainWindow")
@@ -343,6 +355,8 @@ class Ui_mainWindow(object):
         self.comboBox_fx.addItem("")
         self.comboBox_fx.addItem("")
         self.comboBox_fx.addItem("")
+        self.comboBox_fx.addItem("")
+        self.comboBox_fx.addItem ("")
         self.pushButton_wyswietl_kroki = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_wyswietl_kroki.setEnabled(False)
         self.pushButton_wyswietl_kroki.setGeometry(QtCore.QRect(410, 520, 361, 41))
@@ -434,6 +448,7 @@ class Ui_mainWindow(object):
         self.comboBox_fx.currentIndexChanged['QString'].connect(self.comboBox_fx_TextChanged)
 
         self.pushButton_rozpocznij_opt.clicked.connect(self.startOptimization)
+        self.pushButton_wyswietl_kroki.clicked.connect (self.wyswietl_kroki)
 
 
 
@@ -457,8 +472,8 @@ class Ui_mainWindow(object):
         self.lineEdit_eps2.setText(_translate("mainWindow", "0.001"))
         self.lineEdit_eps3.setText(_translate("mainWindow", "0.001"))
         self.checkBox_stop4.setText(_translate("mainWindow", "4. "))
-        self.label_eps4.setText(_translate("mainWindow", "<html><head/><body><p>≤ L<span style=\" vertical-align:sub;\">max </span>=</p></body></html>"))
-        self.lineEdit_eps4.setText(_translate("mainWindow", "0.001"))
+        self.label_eps4.setText(_translate("mainWindow", "<html><head/><body><p>≥ L<span style=\" vertical-align:sub;\">max </span>=</p></body></html>"))
+        self.lineEdit_eps4.setText(_translate("mainWindow", "100"))
         self.label_metoda_kierunek.setText(_translate("mainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">Metoda optymalizacji w kierunku </span></p></body></html>"))
         self.comboBox_metoda_kierunek.setItemText(0, _translate("mainWindow", "Interpolacja sześcienna"))
         self.label_alfa_eq.setText(_translate("mainWindow", "="))
@@ -477,10 +492,12 @@ class Ui_mainWindow(object):
         self.label_stop2.setText(_translate("mainWindow", "||x<sub>n</sub>-x<sub>n-1</sub>||"))
         self.label_opt_w_kierunku.setText(_translate("mainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">Oddzielne kryteria stopu dla metody optymalizacji w kierunku</span></p></body></html>"))
         self.comboBox_fx.setItemText (0, _translate ("mainWindow", ""))
-        self.comboBox_fx.setItemText(1, _translate("mainWindow", "x1^4+x2^4-0.62*x1^2-0.62*x2^2"))
-        self.comboBox_fx.setItemText(2, _translate("mainWindow", "100*(x2-x1^2)^2+(1-x1)^2"))
-        self.comboBox_fx.setItemText(3, _translate("mainWindow", "(x1-x2+x3)^2+(-x1+x2+x3)^2+(x1+x2-x3)^2"))
-        self.comboBox_fx.setItemText(4, _translate("mainWindow", "(1+(x1+x2+1)^2*(19-14*x1+3*x1^2-14*x2+6*x1*x2 +3*x2^2))*(30+(2*x1-3*x2)^2(18-32*x1+12*x1^2+48*x2-36*x1*x2+27*x2^2))"))
+        self.comboBox_fx.setItemText (1, _translate ("mainWindow", "(x1-2)^2+(x2+1)^2"))
+        self.comboBox_fx.setItemText(2, _translate("mainWindow", "x1^4+x2^4-0.62*x1^2-0.62*x2^2"))
+        self.comboBox_fx.setItemText(3, _translate("mainWindow", "100*(x2-x1^2)^2+(1-x1)^2"))
+        self.comboBox_fx.setItemText(4, _translate("mainWindow", "(x1-x2+x3)^2+(-x1+x2+x3)^2+(x1+x2-x3)^2"))
+        self.comboBox_fx.setItemText(5, _translate("mainWindow", "(1+(x1+x2+1)^2*(19-14*x1+3*x1^2-14*x2+6*x1*x2 +3*x2^2))*(30+(2*x1-3*x2)^2(18-32*x1+12*x1^2+48*x2-36*x1*x2+27*x2^2))"))
+        self.comboBox_fx.setItemText(6, _translate ("mainWindow", "(x1-2)^2+(x2-1)^2"))
         self.pushButton_wyswietl_kroki.setText(_translate("mainWindow", "Wyświetl kroki optymalizacji "))
         self.label_x.setText(_translate("mainWindow", "<html><head/><body><p>x = </p></body></html>"))
         self.textBrowser_x.setHtml(_translate("mainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
