@@ -37,8 +37,6 @@ class Ui_mainWindow(object):
             self.criteria_dict["eps4"] = float(self.lineEdit_eps4.text())
         if self.checkBox_stopk1.isChecked():
             self.criteria_dict["epsk1"] = float(self.lineEdit_epsk1.text())
-        if self.checkBox_stopk2.isChecked():
-            self.criteria_dict["epsk2"] = float(self.lineEdit_epsk2.text())
 
     def startOptimization(self):
         self.update_criteria_dict()
@@ -49,8 +47,11 @@ class Ui_mainWindow(object):
             file.write (self.comboBox_fx.currentText ()+"\n")
             file.write (",".join (self.symbol_dict.keys ())+"\n")
 
+
         (fopt, xopt, critopt) = fropt.optimize_fletcher_reeves(self.comboBox_fx.currentText(), self.symbol_dict,
                                                       self.criteria_dict, float(self.lineEdit_alfa0.text()))
+
+
         self.textBrowser_f_opt.setText(str(fopt))
         self.textBrowser_x_opt.setText('['+", ".join([str(x) for x in xopt])+']')
         self.textBrowser_crit_opt.setText('['+", ".join([str(x) for x in critopt])+']')
@@ -69,10 +70,9 @@ class Ui_mainWindow(object):
         self.unlock_button_rozpocznij_opt()
 
     def lock_checkBox_inne_kryteria(self, inne_kryteria_checkBox_state):
-        if not self.checkBox_stopk1.isChecked() and not self.checkBox_stopk2.isChecked():
+        if not self.checkBox_stopk1.isChecked():
             self.checkBox_inne_kryteria.setChecked(False)
             self.checkBox_stopk1.setEnabled(False)
-            self.checkBox_stopk2.setEnabled(False)
 
     def comboBox_fx_TextChanged(self,text):
         self.symbol_dict= {}
@@ -158,16 +158,6 @@ class Ui_mainWindow(object):
         except:
             self.lineEdit_epsk1.setText (str(val_if_error))
 
-    def checkTextCorrectness_lineEdit_epsk2(self):
-        text = self.lineEdit_epsk2.text ()
-        val_if_error = 0.001
-        try:
-            val = float(text)
-            if val <= 0 or val > 10**200:
-                val = val_if_error
-            self.lineEdit_epsk2.setText(str(val))
-        except:
-            self.lineEdit_epsk2.setText (str(val_if_error))
 
     def checkTextCorrectness_lineEdit_alfa0(self):
         text = self.lineEdit_alfa0.text ()
@@ -299,13 +289,6 @@ class Ui_mainWindow(object):
         self.lineEdit_alfa0 = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_alfa0.setGeometry(QtCore.QRect(560, 280, 211, 41))
         self.lineEdit_alfa0.setObjectName("lineEdit_alfa0")
-        self.checkBox_stopk2 = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBox_stopk2.setEnabled(False)
-        self.checkBox_stopk2.setGeometry(QtCore.QRect(420, 430, 81, 41))
-        self.checkBox_stopk2.setObjectName("checkBox_stopk2")
-        self.label_eps_k2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_eps_k2.setGeometry(QtCore.QRect(550, 430, 51, 41))
-        self.label_eps_k2.setObjectName("label_eps_k2")
         self.checkBox_stopk1 = QtWidgets.QCheckBox(self.centralwidget)
         self.checkBox_stopk1.setEnabled(False)
         self.checkBox_stopk1.setGeometry(QtCore.QRect(420, 380, 91, 41))
@@ -321,17 +304,11 @@ class Ui_mainWindow(object):
         self.lineEdit_epsk1.setEnabled(False)
         self.lineEdit_epsk1.setGeometry(QtCore.QRect(600, 380, 171, 41))
         self.lineEdit_epsk1.setObjectName("lineEdit_epsk1")
-        self.lineEdit_epsk2 = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_epsk2.setEnabled(False)
-        self.lineEdit_epsk2.setGeometry(QtCore.QRect(600, 430, 171, 41))
-        self.lineEdit_epsk2.setObjectName("lineEdit_epsk2")
+
         self.pushButton_rozpocznij_opt = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_rozpocznij_opt.setGeometry(QtCore.QRect(20, 520, 341, 41))
         self.pushButton_rozpocznij_opt.setObjectName("pushButton_rozpocznij_opt")
         self.pushButton_rozpocznij_opt.setEnabled (False)
-        self.label_stopk2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_stopk2.setGeometry(QtCore.QRect(460, 430, 91, 41))
-        self.label_stopk2.setObjectName("label_stopk2")
         self.label_stopk1 = QtWidgets.QLabel(self.centralwidget)
         self.label_stopk1.setGeometry(QtCore.QRect(460, 380, 91, 41))
         self.label_stopk1.setObjectName("label_stopk1")
@@ -443,26 +420,22 @@ class Ui_mainWindow(object):
         self.checkBox_stop3.toggled['bool'].connect(self.lineEdit_eps3.setEnabled)
         self.checkBox_stop4.toggled['bool'].connect(self.lineEdit_eps4.setEnabled)
         self.checkBox_inne_kryteria.toggled['bool'].connect(self.checkBox_stopk1.setEnabled)
-        self.checkBox_inne_kryteria.toggled['bool'].connect(self.checkBox_stopk2.setEnabled)
         self.checkBox_stopk1.toggled['bool'].connect(self.lineEdit_epsk1.setEnabled)
-        self.checkBox_stopk2.toggled['bool'].connect(self.lineEdit_epsk2.setEnabled)
+
         self.pushButton_rozpocznij_opt.clicked['bool'].connect(self.pushButton_wyswietl_kroki.setEnabled)
         self.pushButton_zamknij_aplikacje.clicked.connect(mainWindow.close)
         self.checkBox_inne_kryteria.toggled['bool'].connect(self.checkBox_stopk1.setChecked)
-        self.checkBox_inne_kryteria.toggled['bool'].connect(self.checkBox_stopk2.setChecked)
         self.checkBox_stop1.toggled['bool'].connect(self.check_stop_checkboxes)
         self.checkBox_stop2.toggled['bool'].connect(self.check_stop_checkboxes)
         self.checkBox_stop3.toggled['bool'].connect(self.check_stop_checkboxes)
         self.checkBox_stop4.toggled['bool'].connect(self.check_stop_checkboxes)
         self.checkBox_stopk1.toggled['bool'].connect(self.lock_checkBox_inne_kryteria)
-        self.checkBox_stopk2.toggled['bool'].connect(self.lock_checkBox_inne_kryteria)
 
         self.lineEdit_eps1.editingFinished.connect(self.checkTextCorrectness_lineEdit_eps1)
         self.lineEdit_eps2.editingFinished.connect(self.checkTextCorrectness_lineEdit_eps2)
         self.lineEdit_eps3.editingFinished.connect(self.checkTextCorrectness_lineEdit_eps3)
         self.lineEdit_eps4.editingFinished.connect(self.checkTextCorrectness_lineEdit_eps4)
         self.lineEdit_epsk1.editingFinished.connect(self.checkTextCorrectness_lineEdit_epsk1)
-        self.lineEdit_epsk2.editingFinished.connect(self.checkTextCorrectness_lineEdit_epsk2)
         self.lineEdit_alfa0.editingFinished.connect(self.checkTextCorrectness_lineEdit_alfa0)
         self.lineEdit_x0.editingFinished.connect(self.checkTextCorrectness_lineEdit_x0)
         self.comboBox_fx.currentIndexChanged['QString'].connect(self.comboBox_fx_TextChanged)
@@ -498,14 +471,10 @@ class Ui_mainWindow(object):
         self.comboBox_metoda_kierunek.setItemText(0, _translate("mainWindow", "Interpolacja sześcienna"))
         self.label_alfa_eq.setText(_translate("mainWindow", "="))
         self.lineEdit_alfa0.setText(_translate("mainWindow", "1.0"))
-        self.checkBox_stopk2.setText(_translate("mainWindow", "2. "))
-        self.label_eps_k2.setText(_translate("mainWindow", "<html><head/><body><p>≤ ε<span style=\" vertical-align:sub;\">k2 </span>=</p></body></html>"))
         self.checkBox_stopk1.setText(_translate("mainWindow", "1. "))
         self.label_eps_k1.setText(_translate("mainWindow", "<html><head/><body><p>≤ ε<span style=\" vertical-align:sub;\">k1 </span>=</p></body></html>"))
         self.lineEdit_epsk1.setText(_translate("mainWindow", "0.001"))
-        self.lineEdit_epsk2.setText(_translate("mainWindow", "0.001"))
         self.pushButton_rozpocznij_opt.setText(_translate("mainWindow", "Rozpocznij optymalizację"))
-        self.label_stopk2.setText(_translate("mainWindow", "<html><head/><body><p>|f(x<span style=\" vertical-align:sub;\">n</span>)-f(x<span style=\" vertical-align:sub;\">n-1</span>)|</p></body></html>"))
         self.label_stopk1.setText(_translate("mainWindow", "||x<sub>n</sub>-x<sub>n-1</sub>||"))
         self.label_alfa0.setText(_translate("mainWindow", "<html><head/><body><p>α<span style=\" vertical-align:sub;\">0</span></p></body></html>"))
         self.label_stop3.setText(_translate("mainWindow", "<html><head/><body><p>|f(x<span style=\" vertical-align:sub;\">n</span>)-f(x<span style=\" vertical-align:sub;\">n-1</span>)|</p></body></html>"))
